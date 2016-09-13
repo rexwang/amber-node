@@ -1,5 +1,4 @@
 var express = require('express');
 var Router = require('../helpers/router');
-var router = express.Router();
 
-module.exports = Router(router, 'en');
+module.exports = Router(express.Router(), 'en');

@@ -16,16 +16,16 @@ function readJSONFile(filename, callback) {
 
 function Router(router, lang) {
   router.get('/', function(req, res, next) {
-    readJSONFile('lang/home.json', function(err, json) {
+    readJSONFile('be/lang/home.json', function(err, json) {
       if(err) { throw err; }
-      res.render('index', { title: 'Express', lang: json[lang] });
+      res.render('home', {lang: json[lang]});
     });
   });
 
   router.get('/apply', function(req, res, next) {
-    readJSONFile('lang/apply.json', function(err, json) {
+    readJSONFile('be/lang/apply.json', function(err, json) {
       if(err) { throw err; }
-      res.render('apply', { title: 'Express', lang: json[lang] });
+      res.render('apply', {lang: json[lang]});
     });
   });
 
