@@ -3,6 +3,9 @@ var gulp        = require('gulp'),
     concat      = require('gulp-concat'),
     sass        = require('gulp-sass'),
     csso        = require('gulp-csso'),
+    jade        = require('gulp-jade'),
+    data        = require('gulp-data'),
+    fs          = require('fs'),
     runSequence = require('run-sequence');
 
 gulp.task('js', function() {
@@ -22,8 +25,26 @@ gulp.task('css', function() {
     .pipe(gulp.dest('fe/dist/stylesheets'));
 });
 
+gulp.task('views.en', function() {
+  return gulp.src('fe/dev/views/**/*.jade')
+    .pipe(data(function(file) {
+      return JSON.parse(fs.readFileSync('fe/dev/lang/en.json'));
+    }))
+    .pipe(jade({pretty: true}))
+    .pipe(gulp.dest('fe/dist/views/en'));
+});
+
+gulp.task('views.cn', function() {
+  return gulp.src('fe/dev/views/**/*.jade')
+    .pipe(data(function(file) {
+      return JSON.parse(fs.readFileSync('fe/dev/lang/cn.json'));
+    }))
+    .pipe(jade({pretty: true}))
+    .pipe(gulp.dest('fe/dist/views/cn'));
+});
+
 gulp.task('build', function(done) {
-  runSequence('js', 'css', function() {
+  runSequence('js', 'css', 'views.en', 'views.cn', function() {
     done();
   });
 });
@@ -31,4 +52,5 @@ gulp.task('build', function(done) {
 gulp.task('default', function() {
   gulp.watch('fe/dev/js/**/*.js', ['js']);
   gulp.watch('fe/dev/stylesheets/**/*.scss', ['css']);
+  gulp.watch('fe/dev/views/**/*.jade', ['views.en', 'views.cn']);
 });
