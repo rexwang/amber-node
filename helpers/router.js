@@ -1,10 +1,12 @@
 function Router(router, lang) {
+  var html_dir = './dist/';
+
   router.get('/', function(req, res, next) {
-    res.sendfile('dist/' + lang + '/home.html');
+    res.sendfile(html_dir + lang + '/home.html');
   });
 
   router.get('/apply', function(req, res, next) {
-    res.sendfile('dist/' + lang + '/apply.html');
+    res.sendfile(html_dir + lang + '/apply.html');
   });
 
   return router;

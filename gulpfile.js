@@ -3,6 +3,8 @@ var gulp    = require('gulp'),
     data    = require('gulp-data'),
     jade    = require('gulp-jade'),
     plumber = require('gulp-plumber'),
+    sass    = require('gulp-sass'),
+    csso    = require('gulp-csso'),
     requirejsOptimize = require('gulp-requirejs-optimize');
 
 gulp.task('views.en', function() {
@@ -35,11 +37,35 @@ gulp.task('scripts', function() {
         wrap: true
       };
     }))
-    .pipe(gulp.dest('./dist/js/'));
+    .pipe(gulp.dest('./dist/assets/js'));
 });
 
-gulp.task('build', ['views.en', 'views.cn']);
+gulp.task('css', function() {
+  return gulp.src('./public/stylesheets/**/*.scss')
+    .pipe(sass({
+      includePaths: ['./public/stylesheets'],
+      errLogToConsole: true
+    }))
+    .pipe(csso())
+    .pipe(gulp.dest('dist/assets/css'));
+});
+
+gulp.task('images', function () {
+  return gulp.src('./public/images/**/*')
+    .pipe(gulp.dest('dist/assets/images'));
+});
+
+gulp.task('fonts', function () {
+  return gulp.src(['./public/fonts/**/*'])
+    .pipe(gulp.dest('dist/assets/fonts'));
+});
 
 gulp.task('serve', function() {
   gulp.watch('./views/*.jade', ['views.en', 'views.cn']);
+  gulp.watch('./public/stylesheets/**/*.scss', ['css']);
+  gulp.watch('./public/javascripts/**/*.js', ['scripts']);
+  gulp.watch('./public/images/**/*', ['images']);
+  gulp.watch('./public/fonts/**/*', ['fonts']);
 });
+
+gulp.task('build', ['views.en', 'views.cn', 'css', 'scripts', 'images', 'fonts']);
