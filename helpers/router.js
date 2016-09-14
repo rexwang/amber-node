@@ -18,14 +18,14 @@ function Router(router, lang) {
   router.get('/', function(req, res, next) {
     readJSONFile('lang/home.json', function(err, json) {
       if(err) { throw err; }
-      res.render('home', {lang: json[lang]});
+      res.render('home', {text: json[lang], lang: lang});
     });
   });
 
   router.get('/apply', function(req, res, next) {
     readJSONFile('lang/apply.json', function(err, json) {
       if(err) { throw err; }
-      res.render('apply', {lang: json[lang]});
+      res.render('apply', {text: json[lang], lang: lang});
     });
   });
 
