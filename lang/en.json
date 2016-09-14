@@ -1,0 +1,25 @@
+{
+  "LANGUAGE": "en",
+  "HOME": {
+    "HEADER": {
+      "TITLE": "Home Page"
+    },
+    "BODY": {
+
+    },
+    "FOOTER": {
+
+    }
+  },
+  "APPLY": {
+    "HEADER": {
+      "TITLE": "Apply Page"
+    },
+    "BODY": {
+
+    },
+    "FOOTER": {
+
+    }
+  }
+}

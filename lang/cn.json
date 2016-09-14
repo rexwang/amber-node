@@ -1,0 +1,25 @@
+{
+  "LANGUAGE": "cn",
+  "HOME": {
+    "HEADER": {
+      "TITLE": "主页"
+    },
+    "BODY": {
+
+    },
+    "FOOTER" : {
+
+    }
+  },
+  "APPLY": {
+    "HEADER": {
+      "TITLE": "马上申请"
+    },
+    "BODY": {
+
+    },
+    "FOOTER" : {
+
+    }
+  }
+}
