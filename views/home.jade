@@ -3,4 +3,7 @@ extends layout
 block content
   h1= HOME.HEADER.TITLE
   div#foo Testing
-  a(href=LANGUAGE + '/apply') Go to apply page
+  a(href="/#{LANGUAGE}/apply") Go to apply page
+  div#example
+  form#myForm
+    input(type="text" placeholder="#{LANGUAGE}")

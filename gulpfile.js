@@ -1,10 +1,12 @@
-var gulp    = require('gulp'),
-    fs      = require('fs'),
-    data    = require('gulp-data'),
-    jade    = require('gulp-jade'),
-    plumber = require('gulp-plumber'),
-    sass    = require('gulp-sass'),
-    csso    = require('gulp-csso'),
+var gulp        = require('gulp'),
+    fs          = require('fs'),
+    data        = require('gulp-data'),
+    jade        = require('gulp-jade'),
+    plumber     = require('gulp-plumber'),
+    sass        = require('gulp-sass'),
+    csso        = require('gulp-csso'),
+    react       = require('gulp-react'),
+    runSequence = require('run-sequence'),
     requirejsOptimize = require('gulp-requirejs-optimize');
 
 gulp.task('views.en', function() {
@@ -27,6 +29,12 @@ gulp.task('views.cn', function() {
     .pipe(gulp.dest('./dist/cn'));
 });
 
+gulp.task('react', function() {
+  return gulp.src('./public/javascripts/jsx/**/*.jsx')
+    .pipe(react())
+    .pipe(gulp.dest('./public/javascripts/build/'));
+});
+
 gulp.task('scripts', function() {
   return gulp.src('./public/javascripts/main.js')
     .pipe(requirejsOptimize(function() {
@@ -34,7 +42,8 @@ gulp.task('scripts', function() {
         mainConfigFile: './public/javascripts/main.js',
         include: ['main'],
         name: 'bower_components/almond/almond',
-        wrap: true
+        wrap: true,
+        optimize: 'none'
       };
     }))
     .pipe(gulp.dest('./dist/assets/js'));
@@ -63,9 +72,18 @@ gulp.task('fonts', function () {
 gulp.task('serve', function() {
   gulp.watch('./views/*.jade', ['views.en', 'views.cn']);
   gulp.watch('./public/stylesheets/**/*.scss', ['css']);
-  gulp.watch('./public/javascripts/**/*.js', ['scripts']);
+  gulp.watch('./public/javascripts/jsx/**/*.jsx', function() {
+    runSequence('react', 'scripts', 'views.en', 'views.cn');
+  });
   gulp.watch('./public/images/**/*', ['images']);
   gulp.watch('./public/fonts/**/*', ['fonts']);
 });
 
-gulp.task('build', ['views.en', 'views.cn', 'css', 'scripts', 'images', 'fonts']);
+// gulp.task('build', ['views.en', 'views.cn', 'css', 'react', 'scripts', 'images', 'fonts']);
+
+gulp.task('build', function(done) {
+  runSequence('views.en', 'views.cn', 'css', 'react', 'scripts', 'images', 'fonts', function() {
+    done();
+  });
+});
+

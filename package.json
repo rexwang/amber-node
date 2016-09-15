@@ -21,7 +21,9 @@
     "gulp": "^3.9.1",
     "gulp-csso": "^2.0.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-react": "^3.1.0",
     "gulp-requirejs-optimize": "^1.2.0",
-    "gulp-sass": "^2.3.2"
+    "gulp-sass": "^2.3.2",
+    "run-sequence": "^1.2.2"
   }
 }
