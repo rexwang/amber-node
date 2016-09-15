@@ -79,8 +79,6 @@ gulp.task('serve', function() {
   gulp.watch('./public/fonts/**/*', ['fonts']);
 });
 
-// gulp.task('build', ['views.en', 'views.cn', 'css', 'react', 'scripts', 'images', 'fonts']);
-
 gulp.task('build', function(done) {
   runSequence('views.en', 'views.cn', 'css', 'react', 'scripts', 'images', 'fonts', function() {
     done();
