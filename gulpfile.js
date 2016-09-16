@@ -5,8 +5,8 @@ var gulp        = require('gulp'),
     plumber     = require('gulp-plumber'),
     sass        = require('gulp-sass'),
     csso        = require('gulp-csso'),
-    react       = require('gulp-react'),
     runSequence = require('run-sequence'),
+    babel       = require('gulp-babel'),
     requirejsOptimize = require('gulp-requirejs-optimize');
 
 gulp.task('views.en', function() {
@@ -29,10 +29,12 @@ gulp.task('views.cn', function() {
     .pipe(gulp.dest('./dist/cn'));
 });
 
-gulp.task('react', function() {
+gulp.task('babel', function() {
   return gulp.src('./public/javascripts/jsx/**/*.jsx')
-    .pipe(react())
-    .pipe(gulp.dest('./public/javascripts/build/'));
+      .pipe(babel({
+        presets: ['es2015', 'react']
+      }))
+      .pipe(gulp.dest('./public/javascripts/build/'));
 });
 
 gulp.task('scripts', function() {
@@ -73,14 +75,14 @@ gulp.task('serve', function() {
   gulp.watch('./views/*.jade', ['views.en', 'views.cn']);
   gulp.watch('./public/stylesheets/**/*.scss', ['css']);
   gulp.watch('./public/javascripts/jsx/**/*.jsx', function() {
-    runSequence('react', 'scripts', 'views.en', 'views.cn');
+    runSequence('babel', 'scripts', 'views.en', 'views.cn');
   });
   gulp.watch('./public/images/**/*', ['images']);
   gulp.watch('./public/fonts/**/*', ['fonts']);
 });
 
 gulp.task('build', function(done) {
-  runSequence('views.en', 'views.cn', 'css', 'react', 'scripts', 'images', 'fonts', function() {
+  runSequence('views.en', 'views.cn', 'css', 'babel', 'scripts', 'images', 'fonts', function() {
     done();
   });
 });
