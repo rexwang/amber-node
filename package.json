@@ -27,6 +27,7 @@
     "gulp-react": "^3.1.0",
     "gulp-requirejs-optimize": "^1.2.0",
     "gulp-sass": "^2.3.2",
+    "gulp-watch": "^4.3.9",
     "run-sequence": "^1.2.2"
   }
 }

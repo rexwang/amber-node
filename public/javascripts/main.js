@@ -14,5 +14,7 @@ require.config({
   },
 
   // kick start application
-  deps: ['./build/app']
+  // deps: ['./build/app']
 });
+
+require(['./build/base']);

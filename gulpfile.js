@@ -7,6 +7,7 @@ var gulp        = require('gulp'),
     csso        = require('gulp-csso'),
     runSequence = require('run-sequence'),
     babel       = require('gulp-babel'),
+    watch       = require('gulp-watch'),
     requirejsOptimize = require('gulp-requirejs-optimize');
 
 gulp.task('views.en', function() {
@@ -31,14 +32,16 @@ gulp.task('views.cn', function() {
 
 gulp.task('babel', function() {
   return gulp.src('./public/javascripts/jsx/**/*.jsx')
+      .pipe(plumber())
       .pipe(babel({
-        presets: ['es2015', 'react']
+        "presets": ["es2015", "react"]
       }))
       .pipe(gulp.dest('./public/javascripts/build/'));
 });
 
 gulp.task('scripts', function() {
   return gulp.src('./public/javascripts/main.js')
+    .pipe(plumber())
     .pipe(requirejsOptimize(function() {
       return {
         mainConfigFile: './public/javascripts/main.js',
@@ -72,13 +75,13 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('serve', function() {
-  gulp.watch('./views/*.jade', ['views.en', 'views.cn']);
-  gulp.watch('./public/stylesheets/**/*.scss', ['css']);
-  gulp.watch('./public/javascripts/jsx/**/*.jsx', function() {
+  watch('./views/*.jade', function() { runSequence('views.en', 'views.cn'); });
+  watch('./public/stylesheets/**/*.scss', function() { runSequence('css'); });
+  watch('./public/images/**/*', function() { runSequence('images'); });
+  watch('./public/fonts/**/*', function() { runSequence('fonts'); });
+  watch('./public/javascripts/jsx/**/*.jsx', function() {
     runSequence('babel', 'scripts', 'views.en', 'views.cn');
   });
-  gulp.watch('./public/images/**/*', ['images']);
-  gulp.watch('./public/fonts/**/*', ['fonts']);
 });
 
 gulp.task('build', function(done) {
