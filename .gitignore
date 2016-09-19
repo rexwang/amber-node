@@ -5,4 +5,4 @@ bower_components/
 .DS_Store
 .idea/
 **/build/
-public/views/
+public/views/build/

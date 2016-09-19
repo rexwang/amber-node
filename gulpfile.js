@@ -12,23 +12,23 @@ var gulp        = require('gulp'),
 
 
 gulp.task('views.en', function() {
-  return gulp.src('./views/*.jade')
+  return gulp.src('./public/views/jade/*.jade')
     .pipe(plumber())
     .pipe(data(function(file) {
       return JSON.parse(fs.readFileSync('./lang/en.json'));
     }))
     .pipe(jade({pretty: true}))
-    .pipe(gulp.dest('./public/views/en'));
+    .pipe(gulp.dest('./public/views/build/en'));
 });
 
 gulp.task('views.cn', function() {
-  return gulp.src('./views/*.jade')
+  return gulp.src('./public/views/jade/*.jade')
     .pipe(plumber())
     .pipe(data(function(file) {
       return JSON.parse(fs.readFileSync('./lang/cn.json'));
     }))
     .pipe(jade({pretty: true}))
-    .pipe(gulp.dest('./public/views/cn'));
+    .pipe(gulp.dest('./public/views/build/cn'));
 });
 
 gulp.task('babel', function() {
