@@ -7,3 +7,8 @@ block content
   div#example
   form#myForm
     input(type="text" placeholder="#{LANGUAGE}")
+  script(
+    data-module="home",
+    data-main="/javascripts/build/main.js",
+    src="/javascripts/bower_components/requirejs/require.js"
+  )
