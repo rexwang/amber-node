@@ -15,7 +15,7 @@ gulp.task('views.en', function() {
   return gulp.src('./public/views/jade/*.jade')
     .pipe(plumber())
     .pipe(data(function(file) {
-      return JSON.parse(fs.readFileSync('./lang/en.json'));
+      return JSON.parse(fs.readFileSync('./public/lang/en.json'));
     }))
     .pipe(jade({pretty: true}))
     .pipe(gulp.dest('./public/views/build/en'));
@@ -25,7 +25,7 @@ gulp.task('views.cn', function() {
   return gulp.src('./public/views/jade/*.jade')
     .pipe(plumber())
     .pipe(data(function(file) {
-      return JSON.parse(fs.readFileSync('./lang/cn.json'));
+      return JSON.parse(fs.readFileSync('./public/lang/cn.json'));
     }))
     .pipe(jade({pretty: true}))
     .pipe(gulp.dest('./public/views/build/cn'));
@@ -37,7 +37,7 @@ gulp.task('babel', function() {
       .pipe(babel({
         "presets": ["es2015", "react"]
       }))
-      .pipe(uglify())
+      // .pipe(uglify())
       .pipe(gulp.dest('./public/javascripts/build/'));
 });
 
@@ -53,7 +53,7 @@ gulp.task('css', function() {
 
 
 gulp.task('serve', function() {
-  watch('./views/*.jade', function() { runSequence('views.en', 'views.cn'); });
+  watch('./public/views/jade/*.jade', function() { runSequence('views.en', 'views.cn'); });
   watch('./public/stylesheets/scss/**/*.scss', function() { runSequence('css'); });
   watch('./public/javascripts/jsx/**/*.jsx', function() {
     runSequence('babel', 'views.en', 'views.cn');

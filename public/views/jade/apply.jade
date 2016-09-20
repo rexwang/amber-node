@@ -1,4 +1,9 @@
 extends layout
 
 block content
-  h1= APPLY.HEADER.TITLE
+  div#page
+  script(
+    data-module="apply",
+    data-main="/javascripts/build/main.js",
+    src="/javascripts/bower_components/requirejs/require.js"
+  )

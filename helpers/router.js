@@ -5,7 +5,7 @@ function Router(router, lang) {
     res.sendfile(html_dir + lang + '/home.html');
   });
 
-  router.get('/apply', function(req, res, next) {
+  router.get('/apply/:step*?', function(req, res, next) {
     res.sendfile(html_dir + lang + '/apply.html');
   });
 

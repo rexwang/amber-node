@@ -8,5 +8,8 @@
     "requirejs": "^2.3.1",
     "react": "^15.3.1",
     "requirejs-react-jsx": "^1.0.2"
+  },
+  "dependencies": {
+    "requirejs-plugins": "^1.0.3"
   }
 }
