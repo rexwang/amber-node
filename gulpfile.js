@@ -1,61 +1,75 @@
-var gulp        = require('gulp'),
-    fs          = require('fs'),
-    data        = require('gulp-data'),
-    jade        = require('gulp-jade'),
-    plumber     = require('gulp-plumber'),
-    sass        = require('gulp-sass'),
-    csso        = require('gulp-csso'),
-    babel       = require('gulp-babel'),
-    watch       = require('gulp-watch'),
-    uglify      = require('gulp-uglify'),
-    runSequence = require('run-sequence');
+var gulp        = require('gulp');
+var fs          = require('fs');
+var data        = require('gulp-data');
+var jade        = require('gulp-jade');
+var plumber     = require('gulp-plumber');
+var sass        = require('gulp-sass');
+var csso        = require('gulp-csso');
+var babel       = require('gulp-babel');
+var watch       = require('gulp-watch');
+var uglify      = require('gulp-uglify');
+var ts          = require('gulp-typescript');
+var runSequence = require('run-sequence');
 
+var scriptPath  = './public/scripts';
+var cssPath     = './public/stylesheets';
+var viewsPath   = './public/views';
+var langPath    = './public/lang';
 
 gulp.task('views.en', function() {
-  return gulp.src('./public/views/jade/*.jade')
+  return gulp.src(viewsPath + '/jade/*.jade')
     .pipe(plumber())
-    .pipe(data(function(file) {
-      return JSON.parse(fs.readFileSync('./public/lang/en.json'));
+    .pipe(data(function() {
+      return JSON.parse(fs.readFileSync(langPath + '/en.json'));
     }))
     .pipe(jade({pretty: true}))
-    .pipe(gulp.dest('./public/views/build/en'));
+    .pipe(gulp.dest(viewsPath + '/build/en'));
 });
 
 gulp.task('views.cn', function() {
-  return gulp.src('./public/views/jade/*.jade')
+  return gulp.src(viewsPath + '/jade/*.jade')
     .pipe(plumber())
-    .pipe(data(function(file) {
-      return JSON.parse(fs.readFileSync('./public/lang/cn.json'));
+    .pipe(data(function() {
+      return JSON.parse(fs.readFileSync(langPath + '/cn.json'));
     }))
     .pipe(jade({pretty: true}))
-    .pipe(gulp.dest('./public/views/build/cn'));
+    .pipe(gulp.dest(viewsPath + '/build/cn'));
 });
 
 gulp.task('babel', function() {
-  return gulp.src('./public/javascripts/jsx/**/*.jsx')
+  return gulp.src(scriptPath + '/jsx/**/*.jsx')
       .pipe(plumber())
       .pipe(babel({
         "presets": ["es2015", "react"]
       }))
       // .pipe(uglify())
-      .pipe(gulp.dest('./public/javascripts/build/'));
+      .pipe(gulp.dest(scriptPath + '/build/'));
+});
+
+gulp.task('ts', function() {
+  return gulp.src('./public/ts/tsx/**/*.tsx')
+    .pipe(plumber())
+    .pipe(ts({
+      jsx: 'react'
+    }))
+    .pipe(gulp.dest('./public/ts/build'));
 });
 
 gulp.task('css', function() {
-  return gulp.src('./public/stylesheets/scss/**/*.scss')
+  return gulp.src(cssPath + '/scss/**/*.scss')
     .pipe(sass({
       includePaths: ['./public/stylesheets'],
       errLogToConsole: true
     }))
     .pipe(csso())
-    .pipe(gulp.dest('./public/stylesheets/build/'));
+    .pipe(gulp.dest(cssPath + '/build/'));
 });
 
 
 gulp.task('serve', function() {
-  watch('./public/views/jade/*.jade', function() { runSequence('views.en', 'views.cn'); });
-  watch('./public/stylesheets/scss/**/*.scss', function() { runSequence('css'); });
-  watch('./public/javascripts/jsx/**/*.jsx', function() {
+  watch(viewsPath + '/jade/*.jade', function() { runSequence('views.en', 'views.cn'); });
+  watch(cssPath + '/scss/**/*.scss', function() { runSequence('css'); });
+  watch(scriptPath + '/jsx/**/*.jsx', function() {
     runSequence('babel', 'views.en', 'views.cn');
   });
 });
