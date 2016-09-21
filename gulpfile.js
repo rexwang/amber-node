@@ -8,7 +8,6 @@ var csso        = require('gulp-csso');
 var babel       = require('gulp-babel');
 var watch       = require('gulp-watch');
 var uglify      = require('gulp-uglify');
-var ts          = require('gulp-typescript');
 var runSequence = require('run-sequence');
 
 var scriptPath  = './public/scripts';
@@ -44,15 +43,6 @@ gulp.task('babel', function() {
       }))
       // .pipe(uglify())
       .pipe(gulp.dest(scriptPath + '/build/'));
-});
-
-gulp.task('ts', function() {
-  return gulp.src('./public/ts/tsx/**/*.tsx')
-    .pipe(plumber())
-    .pipe(ts({
-      jsx: 'react'
-    }))
-    .pipe(gulp.dest('./public/ts/build'));
 });
 
 gulp.task('css', function() {

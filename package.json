@@ -26,7 +26,6 @@
     "gulp-plumber": "^1.1.0",
     "gulp-react": "^3.1.0",
     "gulp-sass": "^2.3.2",
-    "gulp-typescript": "^2.14.0",
     "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.9",
     "run-sequence": "^1.2.2"
